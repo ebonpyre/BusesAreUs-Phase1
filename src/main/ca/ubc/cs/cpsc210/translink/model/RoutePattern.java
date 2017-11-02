@@ -2,7 +2,9 @@ package ca.ubc.cs.cpsc210.translink.model;
 
 import ca.ubc.cs.cpsc210.translink.util.LatLon;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A description of one pattern of a route
@@ -13,6 +15,12 @@ import java.util.List;
 
 public class RoutePattern {
 
+    private String name;
+    private String dest;
+    private String dir;
+    private List<LatLon> path;
+    private Route route;
+
     /**
      * Construct a new RoutePattern with the given information
      * @param name          the name of the pattern
@@ -21,7 +29,10 @@ public class RoutePattern {
      * @param route         the Route of which this is a pattern
      */
     public RoutePattern(String name, String destination, String direction, Route route) {
-
+        this.name = name;
+        this.dest = destination;
+        this.dir = direction;
+        this.route = route;
     }
 
     /**
@@ -29,7 +40,7 @@ public class RoutePattern {
      * @return      the name
      */
     public String getName() {
-        return null;
+        return name;
     }
 
     /**
@@ -37,7 +48,7 @@ public class RoutePattern {
      * @return      the destination
      */
     public String getDestination() {
-        return null;
+        return dest;
     }
 
     /**
@@ -45,7 +56,7 @@ public class RoutePattern {
      * @return      the direction
      */
     public String getDirection() {
-        return null;
+        return dir;
     }
 
     /**
@@ -55,14 +66,23 @@ public class RoutePattern {
      */
     @Override
     public boolean equals(Object o) {
-        return false;
-
+        if (o.getClass() == (RoutePattern.class)) {
+            RoutePattern temp = (RoutePattern) o;
+            if (Objects.equals(temp.getName(), name)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
     }
 
     @Override
     public int hashCode() {
-
-        return 1;
+        return Integer.valueOf(name);
     }
 
     /**
@@ -70,7 +90,7 @@ public class RoutePattern {
      * @param path      the path
      */
     public void setPath(List<LatLon> path) {
-
+        this.path = path;
     }
 
     /**
@@ -79,7 +99,7 @@ public class RoutePattern {
      * @return      an unmodifiable list of the coordinates on this route pattern
      */
     public List<LatLon> getPath() {
-        return null;
+        return Collections.unmodifiableList(path);
     }
 
     /**
@@ -87,7 +107,7 @@ public class RoutePattern {
      * @param direction     the direction
      */
     public void setDirection(String direction) {
-
+        this.dir = direction;
     }
 
     /**
@@ -95,6 +115,6 @@ public class RoutePattern {
      * @param destination     the destination
      */
     public void setDestination(String destination) {
-
+        this.dest = destination;
     }
 }
