@@ -3,6 +3,7 @@ package ca.ubc.cs.cpsc210.translink.model;
 import ca.ubc.cs.cpsc210.translink.model.exception.StopException;
 import ca.ubc.cs.cpsc210.translink.util.LatLon;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -20,12 +21,14 @@ public class StopManager implements Iterable<Stop> {
     // Use this field to hold all of the stops.
     // Do not change this field or its type, as the iterator method depends on it
     private Map<Integer, Stop> stopMap;
+    private Stop selected;
 
     /**
      * Constructs stop manager with empty collection of stops and null as the selected stop
      */
     private StopManager() {
-
+        stopMap = new HashMap<>();
+        selected = null;
     }
 
     /**
@@ -43,7 +46,7 @@ public class StopManager implements Iterable<Stop> {
     }
 
     public Stop getSelected() {
-        return null;
+        return selected;
     }
 
     /**
@@ -58,7 +61,9 @@ public class StopManager implements Iterable<Stop> {
      * @return  stop with given number
      */
     public Stop getStopWithNumber(int number) {
-        return null;
+        Stop s = new Stop(number, "", new LatLon(-49.2, 123.2));
+        stopMap.put(number, s);
+        return s;
     }
 
     /**
@@ -72,7 +77,9 @@ public class StopManager implements Iterable<Stop> {
      * @return  stop with given number
      */
     public Stop getStopWithNumber(int number, String name, LatLon locn) {
-        return null;
+        Stop s = new Stop(number, name, locn);
+        stopMap.put(number, s);
+        return s;
     }
 
     /**
@@ -82,14 +89,21 @@ public class StopManager implements Iterable<Stop> {
      * @throws StopException when stop manager doesn't contain selected stop
      */
     public void setSelected(Stop selected) throws StopException {
-        throw new StopException("No such stop: " + selected.getNumber() + " " + selected.getName());
+        if (stopMap.containsKey(selected.getNumber())) {
+            this.selected = stopMap.get(selected.getNumber());
+        }
+        else {
+            throw new StopException("No such stop: " + selected.getNumber() + " " + selected.getName());
+
+        }
     }
 
     /**
      * Clear selected stop (selected stop is null)
      */
     public void clearSelectedStop() {
-
+        stopMap.put(selected.getNumber(), null);
+        this.selected = null;
     }
 
     /**
@@ -98,14 +112,14 @@ public class StopManager implements Iterable<Stop> {
      * @return  number of stops added to manager
      */
     public int getNumStops() {
-        return 0;  // stub
+        return stopMap.size();
     }
 
     /**
      * Remove all stops from stop manager
      */
     public void clearStops() {
-
+        stopMap.clear();
     }
 
     /**
@@ -115,8 +129,25 @@ public class StopManager implements Iterable<Stop> {
      * @return    stop closest to pt but less than RADIUS away; null if no stop is within RADIUS metres of pt
      */
     public Stop findNearestTo(LatLon pt) {
-
-        return null;  // stub
+        double ptLat, ptLon;
+        ptLat = pt.getLatitude();
+        ptLon = pt.getLongitude();
+        Stop near = null;
+        double nearDist = RADIUS*RADIUS;
+        for (int i : stopMap.keySet()) {
+            double ptTempLat = stopMap.get(i).getLocn().getLatitude();
+            double ptTempLon = stopMap.get(i).getLocn().getLongitude();
+            double latDist = ptTempLat - ptLat;
+            latDist = latDist*latDist;
+            double lonDist = ptTempLon - ptLon;
+            lonDist = lonDist*lonDist;
+            double dist = latDist + lonDist;
+            if ((dist <= (RADIUS*RADIUS))&&(dist <= nearDist)) {
+                near = stopMap.get(i);
+                nearDist = dist;
+            }
+        }
+        return near;
     }
 
     @Override
