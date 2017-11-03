@@ -61,9 +61,14 @@ public class StopManager implements Iterable<Stop> {
      * @return  stop with given number
      */
     public Stop getStopWithNumber(int number) {
-        Stop s = new Stop(number, "", new LatLon(-49.2, 123.2));
-        stopMap.put(number, s);
-        return s;
+        if (stopMap.keySet().contains(number)) {
+            return stopMap.get(number);
+        }
+        else {
+            Stop s = new Stop(number, "", new LatLon(-49.2, 123.2));
+            stopMap.put(number, s);
+            return s;
+        }
     }
 
     /**
@@ -77,9 +82,14 @@ public class StopManager implements Iterable<Stop> {
      * @return  stop with given number
      */
     public Stop getStopWithNumber(int number, String name, LatLon locn) {
-        Stop s = new Stop(number, name, locn);
-        stopMap.put(number, s);
-        return s;
+        if (stopMap.keySet().contains(number)) {
+            return stopMap.get(number);
+        }
+        else {
+            Stop s = new Stop(number, name, locn);;
+            stopMap.put(number, s);
+            return s;
+        }
     }
 
     /**

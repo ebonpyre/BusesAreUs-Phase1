@@ -42,5 +42,7 @@ public class StopManagerTest {
 
         assertEquals(3, StopManager.getInstance().getNumStops());
         assertEquals(s1, StopManager.getInstance().findNearestTo(new LatLon(0, 1)));
+        assertEquals(s3, StopManager.getInstance().findNearestTo(new LatLon(-50, -50)));
+        assertEquals(s2, StopManager.getInstance().findNearestTo(new LatLon(1000, 1)));
     }
 }
