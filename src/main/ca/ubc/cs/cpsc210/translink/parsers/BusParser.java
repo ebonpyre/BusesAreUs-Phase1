@@ -36,7 +36,9 @@ public class BusParser {
             JSONObject bus = buses.getJSONObject(i);
             Bus b = parseBus(bus);
             try {
-                stop.addBus(b);
+                if (!(b == null)) {
+                    stop.addBus(b);
+                }
             } catch (RouteException e) {
                 // do nothing
             }
@@ -63,7 +65,7 @@ public class BusParser {
 
         if (Objects.equals(RouteNo, "") || Latitude == 0.0 || Longitude == 0.0 ||
                 Objects.equals(Destination, "") || Objects.equals(RecordedTime, "")) {
-            throw new JSONException("Incomplete fields");
+            return null;
         }
 
         return new Bus(RouteManager.getInstance().getRouteWithNumber(RouteNo), Latitude,

@@ -123,7 +123,7 @@ public class Route implements Iterable<Stop> {
      */
     @Override
     public int hashCode() {
-        return Integer.valueOf(number);
+        return number.hashCode();
     }
 
     @Override

@@ -131,7 +131,7 @@ public class Stop implements Iterable<Arrival> {
      * @throws RouteException if bus is not on a route on which this stop lies
      */
     public void addBus(Bus bus) throws RouteException {
-        if (!this.routes.contains(bus.getRoute())) {
+        if (this.routes.contains(bus.getRoute())) {
             buses.add(bus);
         }
         else {

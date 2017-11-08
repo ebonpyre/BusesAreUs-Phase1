@@ -66,15 +66,9 @@ public class RouteManager implements Iterable<Route> {
      * @return  route with given number and name
      */
     public Route getRouteWithNumber(String number, String name) {
-        if (routeMap.keySet().contains(number)) {
-            return routeMap.get(number);
-        }
-        else {
-            Route r = new Route(number);
-            r.setName(name);
-            routeMap.put(number, r);
-            return r;
-        }
+        Route r = getRouteWithNumber(number);
+        r.setName(name);
+        return r;
     }
 
     /**
@@ -96,6 +90,12 @@ public class RouteManager implements Iterable<Route> {
      * Remove all routes from the route manager
      */
     public void clearRoutes() {
+        for (String routeNo : (routeMap.keySet())) {
+            Route r = routeMap.get(routeNo);
+            for (Stop s : (r.getStops())) {
+                s.removeRoute(r);
+            }
+        }
         routeMap.clear();
     }
 }

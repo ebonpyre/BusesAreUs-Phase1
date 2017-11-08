@@ -84,7 +84,7 @@ public class RoutePattern {
 
     @Override
     public int hashCode() {
-        return Integer.valueOf(name);
+        return name.hashCode();
     }
 
     /**

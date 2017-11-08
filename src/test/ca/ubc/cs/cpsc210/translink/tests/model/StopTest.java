@@ -49,17 +49,15 @@ public class StopTest {
         assertEquals(r, b1.getRoute());
         try {
             sNull.addBus(b1);
+        } catch (RouteException e) {
+            fail("Not supposed to go here.");
+        }
+        assertTrue(sNull.getBuses().contains(b1));
+        try {
+            sNull.addBus(b2);
             fail("Not supposed to go here.");
         } catch (RouteException e) {
             // intended
         }
-
-        try {
-            sNull.addBus(b2);
-        } catch (RouteException e) {
-            fail("Not supposed to go here.");
-        }
-
-        assertTrue(sNull.getBuses().contains(b2));
     }
 }
