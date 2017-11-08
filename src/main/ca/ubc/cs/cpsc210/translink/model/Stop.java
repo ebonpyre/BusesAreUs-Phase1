@@ -107,9 +107,10 @@ public class Stop implements Iterable<Arrival> {
         int flag = 0;
         int index = 0;
         for (Arrival a : arrivals) {
-            if (a.compareTo(arrival) > 0 && flag == 0) {
+            if (a.compareTo(arrival) > 0) {
                 arrivals.add(index, arrival);
                 flag = 1;
+                break;
             }
             index++;
         }
@@ -159,6 +160,9 @@ public class Stop implements Iterable<Arrival> {
      */
     @Override
     public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
         if (o.getClass() == Stop.class) {
             return (o.hashCode() == this.hashCode());
         }
