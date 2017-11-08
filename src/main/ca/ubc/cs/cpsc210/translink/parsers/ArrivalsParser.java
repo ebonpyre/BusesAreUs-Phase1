@@ -1,8 +1,13 @@
 package ca.ubc.cs.cpsc210.translink.parsers;
 
+import ca.ubc.cs.cpsc210.translink.model.Arrival;
+import ca.ubc.cs.cpsc210.translink.model.Route;
+import ca.ubc.cs.cpsc210.translink.model.RouteManager;
 import ca.ubc.cs.cpsc210.translink.model.Stop;
 import ca.ubc.cs.cpsc210.translink.parsers.exception.ArrivalsDataMissingException;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A parser for the data returned by the Translink arrivals at a stop query
@@ -28,5 +33,29 @@ public class ArrivalsParser {
     public static void parseArrivals(Stop stop, String jsonResponse)
             throws JSONException, ArrivalsDataMissingException {
         // TODO: Task 4: Implement this method
+        int arrivalCount = 0;
+        JSONArray arrivals = new JSONArray(jsonResponse);
+        for (int i = 0; i < arrivals.length(); i++) {
+            JSONObject arrival = arrivals.getJSONObject(i);
+            Route r = RouteManager.getInstance().getRouteWithNumber(arrival.getString("RouteNo"));
+            JSONArray schedules = arrival.getJSONArray("Schedules");
+            for (int j = 0; j < schedules.length(); j++) {
+                try {
+                    JSONObject schedule = schedules.getJSONObject(j);
+                    int countdown = schedule.getInt("ExpectedCountdown");
+                    String status = schedule.getString("ScheduleStatus");
+                    String destination = schedule.getString("Destination");
+                    Arrival a = new Arrival(countdown, destination, r);
+                    a.setStatus(status);
+                    stop.addArrival(a);
+                    arrivalCount++;
+                } catch (JSONException e) {
+                    // nothing
+                }
+            }
+        }
+        if (arrivalCount == 0) {
+            throw new ArrivalsDataMissingException();
+        }
     }
 }
