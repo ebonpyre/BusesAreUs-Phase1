@@ -1,7 +1,12 @@
 package ca.ubc.cs.cpsc210.translink.parsers;
 
+import ca.ubc.cs.cpsc210.translink.model.Bus;
+import ca.ubc.cs.cpsc210.translink.model.RouteManager;
 import ca.ubc.cs.cpsc210.translink.model.Stop;
+import ca.ubc.cs.cpsc210.translink.model.exception.RouteException;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 // Parser for bus data
 public class BusParser {
@@ -23,5 +28,33 @@ public class BusParser {
      */
     public static void parseBuses(Stop stop, String jsonResponse) throws JSONException {
         // TODO: implement this method
+        JSONArray buses = new JSONArray(jsonResponse);
+
+        for (int i = 0; i < buses.length(); i++) {
+            JSONObject bus = buses.getJSONObject(i);
+            Bus b = parseBus(bus);
+            try {
+                stop.addBus(b);
+            } catch (RouteException e) {
+                // do nothing
+            }
+        }
+    }
+
+    /**
+     * Parses bus parsed from JSON object
+     * Fields: (RouteNo, Latitude, Longitude, Destination, RecordedTime)
+     * @param bus  a JSON object representing a bus
+     * @throws JSONException when bus doesn't have complete fields
+     */
+    private static Bus parseBus(JSONObject bus) throws JSONException {
+        String RouteNo = bus.getString("RouteNo");
+        Double Latitude = bus.getDouble("Latitude");
+        Double Longitude = bus.getDouble("Longitude");
+        String Destination = bus.getString("Destination");
+        String RecordedTime = bus.getString("RecordedTime");
+
+        return new Bus(RouteManager.getInstance().getRouteWithNumber(RouteNo), Latitude,
+                Longitude, Destination, RecordedTime);
     }
 }
