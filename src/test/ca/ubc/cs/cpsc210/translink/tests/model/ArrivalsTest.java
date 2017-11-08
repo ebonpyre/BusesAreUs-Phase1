@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -26,5 +27,13 @@ public class ArrivalsTest {
     public void testConstructor() {
         assertEquals(23, a.getTimeToStopInMins());
         assertEquals(r, a.getRoute());
+        assertEquals("Home", a.getDestination());
+        assertEquals(" ", a.getStatus());
+    }
+
+    @Test
+    public void testCompare() {
+        Arrival a2 = new Arrival(24, "UBC", r);
+        assertTrue(a.compareTo(a2) < 0);
     }
 }
