@@ -1,9 +1,14 @@
 package ca.ubc.cs.cpsc210.translink.parsers;
 
+import ca.ubc.cs.cpsc210.translink.model.Route;
+import ca.ubc.cs.cpsc210.translink.model.RouteManager;
+import ca.ubc.cs.cpsc210.translink.model.RoutePattern;
 import ca.ubc.cs.cpsc210.translink.parsers.exception.RouteDataMissingException;
 import ca.ubc.cs.cpsc210.translink.providers.DataProvider;
 import ca.ubc.cs.cpsc210.translink.providers.FileDataProvider;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -49,5 +54,58 @@ public class RouteParser {
     public void parseRoutes(String jsonResponse)
             throws JSONException, RouteDataMissingException {
         // TODO: Task 4: Implement this method
+        JSONArray routes = new JSONArray(jsonResponse);
+
+        for (int i = 0; i < routes.length(); i ++) {
+            JSONObject route = routes.getJSONObject(i);
+            Route r = null, rFinal = null;
+            try {
+                r = parseRoute(route);
+                rFinal = RouteManager.getInstance().getRouteWithNumber(r.getNumber(), r.getName());
+            } catch (JSONException e) {
+                // nothing happens
+            } catch (RouteDataMissingException e) {
+                continue;
+            }
+            JSONArray patterns = route.getJSONArray("Patterns");
+            for (int j = 0; j < patterns.length(); j++) {
+                JSONObject pattern = patterns.getJSONObject(j);
+                try {
+                    RoutePattern rp = parsePattern(pattern);
+                    rFinal.getPattern(rp.getName(), rp.getDestination(), rp.getDirection());
+                } catch (JSONException e) {
+                    // nothing happens
+                } catch (RouteDataMissingException e) {
+                    break;
+                }
+            }
+        }
+    }
+
+    public Route parseRoute(JSONObject route) throws JSONException, RouteDataMissingException {
+        String name = "", routeNo = "";
+        name = route.getString("Name");
+        routeNo = route.getString("RouteNo");
+        if (name == "" || routeNo == "") {
+            throw new RouteDataMissingException();
+        }
+        Route r = new Route(routeNo);
+        r.setName(name);
+        return r;
+    }
+
+    public RoutePattern parsePattern(JSONObject pattern) throws JSONException, RouteDataMissingException {
+        String destination = "";
+        destination = pattern.getString("Destination");
+        String direction = "";
+        direction = pattern.getString("Direction");
+        String number = "";
+        number = pattern.getString("PatternNo");
+
+        if (destination == "" || direction == "" || number == "") {
+            throw new RouteDataMissingException();
+        }
+
+        return new RoutePattern(number, destination, direction, null);
     }
 }
