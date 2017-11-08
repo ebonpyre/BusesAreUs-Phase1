@@ -68,6 +68,9 @@ public class RoutePattern {
      */
     @Override
     public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
         if (o.getClass() == (RoutePattern.class)) {
             RoutePattern temp = (RoutePattern) o;
             if (Objects.equals(temp.getName(), name)) {
