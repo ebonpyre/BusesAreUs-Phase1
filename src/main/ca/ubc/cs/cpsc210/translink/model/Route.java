@@ -103,6 +103,9 @@ public class Route implements Iterable<Stop> {
      */
     @Override
     public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
         if (o.getClass() == (Route.class)) {
             Route r = (Route) o;
             if (r.getNumber() == number) {
@@ -178,8 +181,6 @@ public class Route implements Iterable<Stop> {
     public RoutePattern getPattern(String patternName) {
         for (RoutePattern r : patterns) {
             if (Objects.equals(r.getName(), patternName)) {
-                r.setDestination("");
-                r.setDirection("");
                 return r;
             }
         }
