@@ -1,5 +1,6 @@
 package ca.ubc.cs.cpsc210.translink.tests.parsers;
 
+import ca.ubc.cs.cpsc210.translink.model.RouteManager;
 import ca.ubc.cs.cpsc210.translink.model.Stop;
 import ca.ubc.cs.cpsc210.translink.model.StopManager;
 import ca.ubc.cs.cpsc210.translink.parsers.BusParser;
@@ -17,6 +18,8 @@ public class BusParserTest {
         Stop s = StopManager.getInstance().getStopWithNumber(51479);
         s.clearBuses();
         String data = "";
+        s.addRoute(RouteManager.getInstance().getRouteWithNumber("014"));
+        s.addRoute(RouteManager.getInstance().getRouteWithNumber("004"));
 
         try {
             data = new FileDataProvider("buslocations.json").dataSourceToString();
