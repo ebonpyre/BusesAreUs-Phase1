@@ -8,6 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 // Parser for bus data
 public class BusParser {
 
@@ -48,11 +50,21 @@ public class BusParser {
      * @throws JSONException when bus doesn't have complete fields
      */
     private static Bus parseBus(JSONObject bus) throws JSONException {
-        String RouteNo = bus.getString("RouteNo");
-        Double Latitude = bus.getDouble("Latitude");
-        Double Longitude = bus.getDouble("Longitude");
-        String Destination = bus.getString("Destination");
-        String RecordedTime = bus.getString("RecordedTime");
+        String RouteNo = "";
+        RouteNo = bus.getString("RouteNo");
+        Double Latitude = 0.0;
+        Latitude = bus.getDouble("Latitude");
+        Double Longitude = 0.0;
+        Longitude = bus.getDouble("Longitude");
+        String Destination = "";
+        Destination = bus.getString("Destination");
+        String RecordedTime = "";
+        RecordedTime = bus.getString("RecordedTime");
+
+        if (Objects.equals(RouteNo, "") || Latitude == 0.0 || Longitude == 0.0 ||
+                Objects.equals(Destination, "") || Objects.equals(RecordedTime, "")) {
+            throw new JSONException("Incomplete fields");
+        }
 
         return new Bus(RouteManager.getInstance().getRouteWithNumber(RouteNo), Latitude,
                 Longitude, Destination, RecordedTime);
