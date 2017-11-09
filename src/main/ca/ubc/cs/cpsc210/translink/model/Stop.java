@@ -76,7 +76,10 @@ public class Stop implements Iterable<Arrival> {
      * @param route  the route to add
      */
     public void addRoute(Route route) {
-        routes.add(route);
+        if (!onRoute(route)){
+            routes.add(route);
+            route.addStop(this);
+        }
     }
 
     /**
@@ -85,7 +88,10 @@ public class Stop implements Iterable<Arrival> {
      * @param route the route to remove
      */
     public void removeRoute(Route route) {
-        routes.remove(route);
+        if (onRoute(route)) {
+            routes.remove(route);
+            route.removeStop(this);
+        }
     }
 
     /**
@@ -94,7 +100,7 @@ public class Stop implements Iterable<Arrival> {
      * @return  true if this stop is on given route
      */
     public boolean onRoute(Route route) {
-        return route.getStops().contains(this);
+        return routes.contains(route);
     }
 
     /**

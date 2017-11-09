@@ -65,9 +65,10 @@ public class Route implements Iterable<Stop> {
      * @param stop the stop to add to this route
      */
     public void addStop(Stop stop) {
-        if (!stops.contains(stop)){
+        if (!hasStop(stop)){
             stops.add(stop);
         }
+        stop.addRoute(this);
     }
 
     /**
@@ -76,7 +77,10 @@ public class Route implements Iterable<Stop> {
      * @param stop the stop to remove from this route
      */
     public void removeStop(Stop stop) {
-        stops.remove(stop);
+        if (hasStop(stop)) {
+            stops.remove(stop);
+            stop.removeRoute(this);
+        }
     }
 
     /**
