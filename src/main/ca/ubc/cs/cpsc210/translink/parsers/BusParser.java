@@ -12,7 +12,6 @@ import java.util.Objects;
 
 // Parser for bus data
 public class BusParser {
-
     /**
      * Parse buses from JSON response produced by TransLink query.  All parsed buses are
      * added to the given stop.  Bus location data that is missing any of the required
