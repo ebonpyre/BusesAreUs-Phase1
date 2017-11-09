@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -27,7 +28,63 @@ public class StopParserTest {
     @Test
     public void testStopParserNormal() throws StopDataMissingException, JSONException, IOException {
         StopParser p = new StopParser("stops.json");
-        p.parse();
+        try{
+            p.parse();
+        } catch (StopDataMissingException e) {
+            fail ("Not expected");
+        } catch (JSONException e) {
+            fail ("Not expected");
+        } catch (IOException e) {
+            fail ("Not expected");
+        }
         assertEquals(8524, StopManager.getInstance().getNumStops());
+    }
+
+    @Test
+    public void testStopParserNotJSON() throws StopDataMissingException, JSONException, IOException {
+        StopParser p = new StopParser("stopsnotjson.json");
+        try{
+            p.parse();
+            fail ("Not expected");
+        } catch (StopDataMissingException e) {
+            fail ("Not expected");
+        } catch (JSONException e) {
+            // expected
+        } catch (IOException e) {
+            fail ("Not expected");
+        }
+        assertEquals(0, StopManager.getInstance().getNumStops());
+    }
+
+    @Test
+    public void testStopParserMissingData() throws StopDataMissingException, JSONException, IOException {
+        StopParser p = new StopParser("stopsmissingdata.json");
+        try{
+            p.parse();
+            fail ("Not expected");
+        } catch (StopDataMissingException e) {
+            // expected
+        } catch (JSONException e) {
+            fail ("Not expected");
+        } catch (IOException e) {
+            fail ("Not expected");
+        }
+        assertEquals(1, StopManager.getInstance().getNumStops());
+    }
+
+    @Test
+    public void testStopParserMissingRoutes() throws StopDataMissingException, JSONException, IOException {
+        StopParser p = new StopParser("stopsmissingroutes.json");
+        try{
+            p.parse();
+            fail ("Not expected");
+        } catch (StopDataMissingException e) {
+            // expected
+        } catch (JSONException e) {
+            fail ("Not expected");
+        } catch (IOException e) {
+            fail ("Not expected");
+        }
+        assertEquals(2, StopManager.getInstance().getNumStops());
     }
 }

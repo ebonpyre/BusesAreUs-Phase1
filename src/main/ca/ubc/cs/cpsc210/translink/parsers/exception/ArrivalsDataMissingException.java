@@ -7,8 +7,4 @@ public class ArrivalsDataMissingException extends Exception {
     public ArrivalsDataMissingException() {
         super();
     }
-
-    public ArrivalsDataMissingException(String msg) {
-        super(msg);
-    }
 }

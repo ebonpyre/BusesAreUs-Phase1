@@ -7,8 +7,4 @@ public class RouteDataMissingException extends Exception {
     public RouteDataMissingException() {
         super();
     }
-
-    public RouteDataMissingException(String msg) {
-        super(msg);
-    }
 }

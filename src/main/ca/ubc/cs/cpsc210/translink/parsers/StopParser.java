@@ -55,26 +55,26 @@ public class StopParser {
             throws JSONException, StopDataMissingException {
         // TODO: Task 4: Implement this method
         JSONArray stops = new JSONArray(jsonResponse);
-        Stop sFinal = null;
+        Stop sFinal;
         for (int i = 0; i < stops.length(); i++) {
             try {
                 JSONObject stop = stops.getJSONObject(i);
                 Stop s = parseStop(stop);
-                sFinal = StopManager.getInstance().getStopWithNumber(s.getNumber(),
-                        s.getName(), s.getLocn());
                 String routes = stop.getString("Routes");
                 String[] routeList = routes.split(",", 0);
+                sFinal = StopManager.getInstance().getStopWithNumber(s.getNumber(),
+                        s.getName(), s.getLocn());
                 for (String rNo : routeList) {
                     Route r = RouteManager.getInstance().getRouteWithNumber(rNo);
                     sFinal.addRoute(r);
                 }
-            } catch (StopDataMissingException e) {
-                // nothing
+            } catch (JSONException e) {
+                throw new StopDataMissingException();
             }
         }
     }
 
-    public Stop parseStop (JSONObject stop) throws JSONException, StopDataMissingException {
+    public Stop parseStop (JSONObject stop) throws JSONException {
         String name = "";
         int stopNo = 0;
         Double lat = 0.0, lon = 0.0;
@@ -83,9 +83,6 @@ public class StopParser {
         lat = stop.getDouble("Latitude");
         lon = stop.getDouble("Longitude");
 
-        if (name == "" || stopNo == 0 || lat == 0.0 || lon == 0.0) {
-            throw new StopDataMissingException();
-        }
         return new Stop(stopNo, name, new LatLon(lat, lon));
     }
 }

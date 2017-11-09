@@ -7,8 +7,4 @@ public class StopDataMissingException extends Exception {
     public StopDataMissingException() {
         super();
     }
-
-    public StopDataMissingException(String msg) {
-        super(msg);
-    }
 }
