@@ -69,7 +69,7 @@ public class StopParserTest {
         } catch (IOException e) {
             fail ("Not expected");
         }
-        assertEquals(1, StopManager.getInstance().getNumStops());
+        assertEquals(8523, StopManager.getInstance().getNumStops());
     }
 
     @Test
@@ -85,6 +85,6 @@ public class StopParserTest {
         } catch (IOException e) {
             fail ("Not expected");
         }
-        assertEquals(2, StopManager.getInstance().getNumStops());
+        assertEquals(8523, StopManager.getInstance().getNumStops());
     }
 }

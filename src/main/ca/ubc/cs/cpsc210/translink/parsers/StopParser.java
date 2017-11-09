@@ -56,12 +56,13 @@ public class StopParser {
         // TODO: Task 4: Implement this method
         JSONArray stops = new JSONArray(jsonResponse);
         Stop sFinal;
+        int flag = 0;
         for (int i = 0; i < stops.length(); i++) {
             try {
                 JSONObject stop = stops.getJSONObject(i);
                 Stop s = parseStop(stop);
                 String routes = stop.getString("Routes");
-                String[] routeList = routes.split(",", 0);
+                String[] routeList = routes.split(", ", 0);
                 sFinal = StopManager.getInstance().getStopWithNumber(s.getNumber(),
                         s.getName(), s.getLocn());
                 for (String rNo : routeList) {
@@ -69,19 +70,19 @@ public class StopParser {
                     sFinal.addRoute(r);
                 }
             } catch (JSONException e) {
-                throw new StopDataMissingException();
+                flag = 1;
             }
+        }
+        if (flag == 1) {
+            throw new StopDataMissingException();
         }
     }
 
     public Stop parseStop (JSONObject stop) throws JSONException {
-        String name = "";
-        int stopNo = 0;
-        Double lat = 0.0, lon = 0.0;
-        name = stop.getString("Name");
-        stopNo = stop.getInt("StopNo");
-        lat = stop.getDouble("Latitude");
-        lon = stop.getDouble("Longitude");
+        String name = stop.getString("Name");
+        int stopNo = stop.getInt("StopNo");
+        Double lat = stop.getDouble("Latitude");
+        Double lon = stop.getDouble("Longitude");
 
         return new Stop(stopNo, name, new LatLon(lat, lon));
     }
