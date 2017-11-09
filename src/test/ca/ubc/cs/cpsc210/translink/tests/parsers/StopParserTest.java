@@ -26,7 +26,7 @@ public class StopParserTest {
     }
 
     @Test
-    public void testStopParserNormal() throws StopDataMissingException, JSONException, IOException {
+    public void testStopParserNormal() {
         StopParser p = new StopParser("stops.json");
         try{
             p.parse();
@@ -41,7 +41,7 @@ public class StopParserTest {
     }
 
     @Test
-    public void testStopParserNotJSON() throws StopDataMissingException, JSONException, IOException {
+    public void testStopParserNotJSON() {
         StopParser p = new StopParser("stopsnotjson.json");
         try{
             p.parse();
@@ -57,7 +57,7 @@ public class StopParserTest {
     }
 
     @Test
-    public void testStopParserMissingData() throws StopDataMissingException, JSONException, IOException {
+    public void testStopParserMissingData() {
         StopParser p = new StopParser("stopsmissingdata.json");
         try{
             p.parse();
@@ -73,7 +73,7 @@ public class StopParserTest {
     }
 
     @Test
-    public void testStopParserMissingRoutes() throws StopDataMissingException, JSONException, IOException {
+    public void testStopParserMissingRoutes() {
         StopParser p = new StopParser("stopsmissingroutes.json");
         try{
             p.parse();
