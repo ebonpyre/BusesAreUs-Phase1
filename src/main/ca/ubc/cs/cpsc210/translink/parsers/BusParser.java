@@ -8,8 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Objects;
-
 // Parser for bus data
 public class BusParser {
     /**
@@ -33,11 +31,14 @@ public class BusParser {
 
         for (int i = 0; i < buses.length(); i++) {
             JSONObject bus = buses.getJSONObject(i);
-            Bus b = parseBus(bus);
+            Bus b = null;
             try {
-                if (!(b == null)) {
-                    stop.addBus(b);
-                }
+                b = parseBus(bus);
+            } catch (JSONException e) {
+                continue;
+            }
+            try {
+                stop.addBus(b);
             } catch (RouteException e) {
                 // do nothing
             }
@@ -61,11 +62,6 @@ public class BusParser {
         Destination = bus.getString("Destination");
         String RecordedTime = "";
         RecordedTime = bus.getString("RecordedTime");
-
-        if (Objects.equals(RouteNo, "") || Latitude == 0.0 || Longitude == 0.0 ||
-                Objects.equals(Destination, "") || Objects.equals(RecordedTime, "")) {
-            return null;
-        }
 
         return new Bus(RouteManager.getInstance().getRouteWithNumber(RouteNo), Latitude,
                 Longitude, Destination, RecordedTime);
