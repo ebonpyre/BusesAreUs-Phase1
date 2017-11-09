@@ -2,6 +2,7 @@ package ca.ubc.cs.cpsc210.translink.model;
 
 import ca.ubc.cs.cpsc210.translink.model.exception.StopException;
 import ca.ubc.cs.cpsc210.translink.util.LatLon;
+import ca.ubc.cs.cpsc210.translink.util.SphericalGeometry;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -146,22 +147,13 @@ public class StopManager implements Iterable<Stop> {
      * @return    stop closest to pt but less than RADIUS away; null if no stop is within RADIUS metres of pt
      */
     public Stop findNearestTo(LatLon pt) {
-        double ptLat, ptLon;
-        ptLat = pt.getLatitude();
-        ptLon = pt.getLongitude();
         Stop near = null;
-        double nearDist = RADIUS*RADIUS;
-        for (int i : stopMap.keySet()) {
-            double ptTempLat = stopMap.get(i).getLocn().getLatitude();
-            double ptTempLon = stopMap.get(i).getLocn().getLongitude();
-            double latDist = ptTempLat - ptLat;
-            latDist = latDist*latDist;
-            double lonDist = ptTempLon - ptLon;
-            lonDist = lonDist*lonDist;
-            double dist = latDist + lonDist;
-            if ((dist <= (RADIUS*RADIUS))&&(dist <= nearDist)) {
-                near = stopMap.get(i);
+        double nearDist = RADIUS;
+        for (Stop s : stopMap.values()) {
+            double dist = SphericalGeometry.distanceBetween(s.getLocn(), pt);
+            if (dist < nearDist) {
                 nearDist = dist;
+                near = s;
             }
         }
         return near;

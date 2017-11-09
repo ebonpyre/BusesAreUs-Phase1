@@ -34,6 +34,7 @@ public class StopManagerTest {
         Stop s1 = new Stop(1, "My house", new LatLon(0, 0));
         Stop s2 = new Stop(2, "My house", new LatLon(1000, 200));
         Stop s3 = new Stop(3, "My house", new LatLon(-50, -100));
+        Stop s4 = new Stop(4, "My house", new LatLon(10000, 10000));
 
         Stop r1 = StopManager.getInstance().getStopWithNumber(1, "My house", new LatLon(0, 0));
         assertEquals(s1, r1);
@@ -48,10 +49,14 @@ public class StopManagerTest {
         Stop r3 = StopManager.getInstance().getStopWithNumber(3, "My house", new LatLon(-50, -100));
         assertEquals(s3, r3);
 
-        assertEquals(3, StopManager.getInstance().getNumStops());
-        assertEquals(s1, StopManager.getInstance().findNearestTo(new LatLon(0, 1)));
-        assertEquals(s3, StopManager.getInstance().findNearestTo(new LatLon(-50, -50)));
-        assertEquals(s2, StopManager.getInstance().findNearestTo(new LatLon(1000, 1)));
+        Stop r6 = StopManager.getInstance().getStopWithNumber(4, "My house", new LatLon(10000, 10000));
+        assertEquals(s4, r6);
+
+        assertEquals(4, StopManager.getInstance().getNumStops());
+        assertEquals(s1, StopManager.getInstance().findNearestTo(new LatLon(0.0001, 0.001)));
+        assertEquals(s3, StopManager.getInstance().findNearestTo(new LatLon(-50, -100.001)));
+        assertEquals(s2, StopManager.getInstance().findNearestTo(new LatLon(1000, 200)));
+        assertEquals(null, StopManager.getInstance().findNearestTo(new LatLon(1000, 0)));
     }
 
     @Test

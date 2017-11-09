@@ -46,15 +46,13 @@ public class RouteManager implements Iterable<Route> {
      * @return  route with given number
      */
     public Route getRouteWithNumber(String number) {
-        if (routeMap.keySet().contains(number)) {
-            return routeMap.get(number);
-        }
-        else {
-            Route r = new Route(number);
-            r.setName("");
-            routeMap.put(number, r);
+        Route r = routeMap.get(number);
+        if (!(r == null)) {
             return r;
         }
+        r = new Route(number);
+        routeMap.put(number, r);
+        return r;
     }
 
     /**
