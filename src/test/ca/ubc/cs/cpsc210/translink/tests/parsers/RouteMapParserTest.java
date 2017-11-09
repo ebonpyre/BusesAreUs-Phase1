@@ -7,7 +7,10 @@ import ca.ubc.cs.cpsc210.translink.parsers.RouteMapParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -35,7 +38,22 @@ public class RouteMapParserTest {
     @Test
     public void testRouteParserNormal() {
         RouteMapParser p = new RouteMapParser("allroutemaps.txt");
-        p.parse();
+        try {
+            p.parse();
+        } catch (IOException e) {
+            fail("Not expected");
+        }
         assertEquals(1232, countNumRoutePatterns());
+    }
+
+    @Test
+    public void testRouteParserNoPoints() {
+        RouteMapParser p = new RouteMapParser("allroutemapsnopoints.txt");
+        try {
+            p.parse();
+        } catch (IOException e) {
+            fail("Not expected");
+        }
+        assertEquals(2, countNumRoutePatterns());
     }
 }

@@ -24,21 +24,17 @@ public class RouteMapParser {
     /**
      * Parse the route map txt file
      */
-    public void parse() {
+    public void parse() throws IOException {
         DataProvider dataProvider = new FileDataProvider(fileName);
-        try {
-            String c = dataProvider.dataSourceToString();
-            if (!c.equals("")) {
-                int posn = 0;
-                while (posn < c.length()) {
-                    int endposn = c.indexOf('\n', posn);
-                    String line = c.substring(posn, endposn);
-                    parseOnePattern(line);
-                    posn = endposn + 1;
-                }
+        String c = dataProvider.dataSourceToString();
+        if (!c.equals("")) {
+            int posn = 0;
+            while (posn < c.length()) {
+                int endposn = c.indexOf('\n', posn);
+                String line = c.substring(posn, endposn);
+                parseOnePattern(line);
+                posn = endposn + 1;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
