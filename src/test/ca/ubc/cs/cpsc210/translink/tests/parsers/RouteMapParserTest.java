@@ -56,4 +56,15 @@ public class RouteMapParserTest {
         }
         assertEquals(2, countNumRoutePatterns());
     }
+
+    @Test
+    public void testRouteParserEmpty() {
+        RouteMapParser p = new RouteMapParser("allroutemapsempty.txt");
+        try {
+            p.parse();
+        } catch (IOException e) {
+            fail("Not expected");
+        }
+        assertEquals(0, countNumRoutePatterns());
+    }
 }
