@@ -15,6 +15,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class BusParserTest {
     @Test
+    public void testConstructor() {
+        BusParser b = new BusParser();
+    }
+    @Test
     public void testBusLocationsParserNormal() {
         Stop s = StopManager.getInstance().getStopWithNumber(51479);
         s.clearBuses();
@@ -84,5 +88,30 @@ public class BusParserTest {
         }
 
         assertEquals(3, s.getBuses().size());
+    }
+
+    @Test
+    public void testBusLocationsNotJSON() {
+        Stop s = StopManager.getInstance().getStopWithNumber(51479);
+        s.clearBuses();
+        String data = "";
+        s.addRoute(RouteManager.getInstance().getRouteWithNumber("014"));
+        s.addRoute(RouteManager.getInstance().getRouteWithNumber("004"));
+
+        try {
+            data = new FileDataProvider("buslocationsnotjson.json").dataSourceToString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Can't read the bus locations data");
+        }
+
+        try {
+            BusParser.parseBuses(s, data);
+            fail ("Not expected");
+        } catch (JSONException e) {
+            // expected
+        }
+
+        assertEquals(0, s.getBuses().size());
     }
 }
