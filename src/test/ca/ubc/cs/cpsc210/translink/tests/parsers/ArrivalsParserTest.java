@@ -92,17 +92,18 @@ public class ArrivalsParserTest {
         }
         try {
             ArrivalsParser.parseArrivals(s, data);
+            fail("Not expected");
         } catch (JSONException e) {
             fail("Not expected");
         } catch (ArrivalsDataMissingException e) {
-            fail("Not expected");
+            // expected
         }
         int count = 0;
         for (Arrival a : s) {
             assertTrue(a.getTimeToStopInMins() <= 120);
             count++;
         }
-        assertEquals(4, count);
+        assertEquals(0, count);
     }
 
     @Test
@@ -118,17 +119,18 @@ public class ArrivalsParserTest {
         }
         try {
             ArrivalsParser.parseArrivals(s, data);
+            fail("Not expected");
         } catch (JSONException e) {
             fail("Not expected");
         } catch (ArrivalsDataMissingException e) {
-            fail("Not expected");
+            // expected
         }
         int count = 0;
         for (Arrival a : s) {
             assertTrue(a.getTimeToStopInMins() <= 120);
             count++;
         }
-        assertEquals(5, count);
+        assertEquals(0, count);
     }
 
     @Test

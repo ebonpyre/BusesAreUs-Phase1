@@ -36,11 +36,11 @@ public class ArrivalsParser {
         int arrivalCount = 0;
         JSONArray arrivals = new JSONArray(jsonResponse);
         for (int i = 0; i < arrivals.length(); i++) {
-            JSONObject arrival = arrivals.getJSONObject(i);
-            Route r = RouteManager.getInstance().getRouteWithNumber(arrival.getString("RouteNo"));
-            JSONArray schedules = arrival.getJSONArray("Schedules");
-            for (int j = 0; j < schedules.length(); j++) {
-                try {
+            try {
+                JSONObject arrival = arrivals.getJSONObject(i);
+                Route r = RouteManager.getInstance().getRouteWithNumber(arrival.getString("RouteNo"));
+                JSONArray schedules = arrival.getJSONArray("Schedules");
+                for (int j = 0; j < schedules.length(); j++) {
                     JSONObject schedule = schedules.getJSONObject(j);
                     int countdown = schedule.getInt("ExpectedCountdown");
                     String status = schedule.getString("ScheduleStatus");
@@ -49,9 +49,9 @@ public class ArrivalsParser {
                     a.setStatus(status);
                     stop.addArrival(a);
                     arrivalCount++;
-                } catch (JSONException e) {
-                    // nothing
                 }
+            } catch (JSONException e) {
+                // nothing
             }
         }
         if (arrivalCount == 0) {
