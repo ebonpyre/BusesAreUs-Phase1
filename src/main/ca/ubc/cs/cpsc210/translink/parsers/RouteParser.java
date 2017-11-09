@@ -55,9 +55,9 @@ public class RouteParser {
             throws JSONException, RouteDataMissingException {
         // TODO: Task 4: Implement this method
         JSONArray routes = new JSONArray(jsonResponse);
-
-        try {
-            for (int i = 0; i < routes.length(); i ++) {
+        int flag = 0;
+        for (int i = 0; i < routes.length(); i ++) {
+            try{
                 JSONObject route = routes.getJSONObject(i);
                 Route r, rFinal;
                 JSONArray patterns = route.getJSONArray("Patterns");
@@ -68,8 +68,11 @@ public class RouteParser {
                     RoutePattern rp = parsePattern(pattern);
                     rFinal.getPattern(rp.getName(), rp.getDestination(), rp.getDirection());
                 }
+            } catch (JSONException e) {
+                flag = 1;
             }
-        } catch (JSONException e) {
+        }
+        if (flag == 1) {
             throw new RouteDataMissingException();
         }
     }
