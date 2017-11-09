@@ -59,6 +59,11 @@ public class StopManagerTest {
         Stop s1 = new Stop(1, "My house", new LatLon(0, 0));
         Stop s2 = new Stop(2, "My house", new LatLon(1000, 200));
         try {
+            StopManager.getInstance().setSelected(null);
+        } catch (StopException e) {
+            fail("Not expected");
+        }
+        try {
             StopManager.getInstance().setSelected(s1);
             fail("Not expected");
         } catch (StopException e) {
