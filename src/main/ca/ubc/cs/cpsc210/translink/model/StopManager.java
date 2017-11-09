@@ -27,8 +27,8 @@ public class StopManager implements Iterable<Stop> {
      * Constructs stop manager with empty collection of stops and null as the selected stop
      */
     private StopManager() {
-        stopMap = new HashMap<>();
-        selected = null;
+        this.stopMap = new HashMap<>();
+        this.selected = null;
     }
 
     /**
@@ -65,7 +65,7 @@ public class StopManager implements Iterable<Stop> {
             return stopMap.get(number);
         }
         else {
-            Stop s = new Stop(number, "", new LatLon(-49.2, 123.2));
+            Stop s = new Stop(number, "", null);
             stopMap.put(number, s);
             return s;
         }
@@ -83,7 +83,10 @@ public class StopManager implements Iterable<Stop> {
      */
     public Stop getStopWithNumber(int number, String name, LatLon locn) {
         if (stopMap.keySet().contains(number)) {
-            return stopMap.get(number);
+            Stop s = stopMap.get(number);
+            s.setName(name);
+            s.setLocn(locn);
+            return s;
         }
         else {
             Stop s = new Stop(number, name, locn);;
@@ -99,12 +102,16 @@ public class StopManager implements Iterable<Stop> {
      * @throws StopException when stop manager doesn't contain selected stop
      */
     public void setSelected(Stop selected) throws StopException {
-        if (stopMap.containsKey(selected.getNumber())) {
-            this.selected = stopMap.get(selected.getNumber());
+        if (selected == null) {
+            this.selected = null;
         }
         else {
-            throw new StopException("No such stop: " + selected.getNumber() + " " + selected.getName());
-
+            if (stopMap.containsKey(selected.getNumber())) {
+                this.selected = selected;
+            }
+            else {
+                throw new StopException("No such stop: " + selected.getNumber() + " " + selected.getName());
+            }
         }
     }
 
@@ -112,7 +119,6 @@ public class StopManager implements Iterable<Stop> {
      * Clear selected stop (selected stop is null)
      */
     public void clearSelectedStop() {
-        stopMap.put(selected.getNumber(), null);
         this.selected = null;
     }
 
@@ -130,6 +136,7 @@ public class StopManager implements Iterable<Stop> {
      */
     public void clearStops() {
         stopMap.clear();
+        clearSelectedStop();
     }
 
     /**
