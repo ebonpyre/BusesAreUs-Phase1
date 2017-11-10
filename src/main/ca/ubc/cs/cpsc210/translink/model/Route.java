@@ -171,7 +171,6 @@ public class Route implements Iterable<Stop> {
             }
         }
         RoutePattern temp = new RoutePattern(patternName, destination, direction, this);
-        addPattern(temp);
         return temp;
     }
 
@@ -189,7 +188,6 @@ public class Route implements Iterable<Stop> {
             }
         }
         RoutePattern temp = new RoutePattern(patternName, "", "", this);
-        addPattern(temp);
         return temp;
     }
 

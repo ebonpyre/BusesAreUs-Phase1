@@ -91,7 +91,8 @@ public class RouteParser {
         destination = pattern.getString("Destination");
         direction = pattern.getString("Direction");
         number = pattern.getString("PatternNo");
+        Route dummy = new Route("0");
 
-        return new RoutePattern(number, destination, direction, null);
+        return new RoutePattern(number, destination, direction, dummy);
     }
 }

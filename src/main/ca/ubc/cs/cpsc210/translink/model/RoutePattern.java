@@ -35,6 +35,7 @@ public class RoutePattern {
         this.dir = direction;
         this.route = route;
         this.path = new ArrayList<>();
+        route.addPattern(this);
     }
 
     /**

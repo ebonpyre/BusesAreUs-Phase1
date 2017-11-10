@@ -27,8 +27,7 @@ public class RouteTest {
 
     @Test
     public void testAddAndRemove() {
-        RoutePattern rp = new RoutePattern("", "", "", null);
-        rNull.addPattern(rp);
+        RoutePattern rp = new RoutePattern("", "", "", rNull);
         assertTrue(rNull.getPatterns().contains(rp));
 
         Stop s = new Stop(0, "", null);
@@ -62,9 +61,9 @@ public class RouteTest {
 
     @Test
     public void testGetPattern() {
-        RoutePattern rpNull = new RoutePattern("", "", "", null);
-        RoutePattern rp1 = new RoutePattern("1", "", "", null);
-        RoutePattern rp2 = new RoutePattern("2", "", "", null);
+        RoutePattern rpNull = new RoutePattern("", "", "", rNull);
+        RoutePattern rp1 = new RoutePattern("1", "", "", rNull);
+        RoutePattern rp2 = new RoutePattern("2", "", "", rNull);
         r1.addPattern(rpNull);
         r1.addPattern(rp1);
         r1.addPattern(rp2);
@@ -73,8 +72,10 @@ public class RouteTest {
         assertEquals(rp2, r1.getPattern("2"));
         assertEquals(3, r1.getPatterns().size());
 
-        r1.getPattern("3");
-        r1.getPattern("4", "", "");
+        RoutePattern rp3 = new RoutePattern("3", "", "", r1);
+        assertEquals(rp3, r1.getPattern("3"));
+        assertEquals(r1.getPattern("4"), new RoutePattern("4", "", "", r1));
+        assertEquals(r1.getPattern("5", "", ""), new RoutePattern("5", "", "", r1));
     }
 
     @Test

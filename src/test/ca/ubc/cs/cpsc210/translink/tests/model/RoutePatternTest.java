@@ -1,5 +1,6 @@
 package ca.ubc.cs.cpsc210.translink.tests.model;
 
+import ca.ubc.cs.cpsc210.translink.model.Route;
 import ca.ubc.cs.cpsc210.translink.model.RoutePattern;
 import ca.ubc.cs.cpsc210.translink.util.LatLon;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,19 +9,19 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RoutePatternTest {
     RoutePattern rpNull, rp1, rp2, rp3;
+    Route r;
 
     @BeforeEach
     public void setup() {
-        rpNull = new RoutePattern("", "", "", null);
-        rp1 = new RoutePattern("1", "", "", null);
-        rp2 = new RoutePattern("2", "", "", null);
-        rp3 = new RoutePattern("1", "", "", null);
+        r = new Route("0");
+        rpNull = new RoutePattern("", "", "", r);
+        rp1 = new RoutePattern("1", "", "", r);
+        rp2 = new RoutePattern("2", "", "", r);
+        rp3 = new RoutePattern("1", "", "", r);
     }
 
     @Test
