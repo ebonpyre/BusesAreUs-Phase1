@@ -67,4 +67,16 @@ public class RouteMapParserTest {
         }
         assertEquals(0, countNumRoutePatterns());
     }
+
+    @Test
+    public void testRouteParserIO() {
+        RouteMapParser p = new RouteMapParser("allroutesdoesnotexist.txt");
+        try {
+            p.parse();
+            fail("Not expected");
+        } catch (IOException e) {
+            // expected
+        }
+        assertEquals(0, countNumRoutePatterns());
+    }
 }
