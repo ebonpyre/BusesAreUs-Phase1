@@ -31,7 +31,7 @@ public class BusParser {
 
         for (int i = 0; i < buses.length(); i++) {
             JSONObject bus = buses.getJSONObject(i);
-            Bus b = null;
+            Bus b;
             try {
                 b = parseBus(bus);
             } catch (JSONException e) {
@@ -52,16 +52,11 @@ public class BusParser {
      * @throws JSONException when bus doesn't have complete fields
      */
     private static Bus parseBus(JSONObject bus) throws JSONException {
-        String RouteNo = "";
-        RouteNo = bus.getString("RouteNo");
-        Double Latitude = 0.0;
-        Latitude = bus.getDouble("Latitude");
-        Double Longitude = 0.0;
-        Longitude = bus.getDouble("Longitude");
-        String Destination = "";
-        Destination = bus.getString("Destination");
-        String RecordedTime = "";
-        RecordedTime = bus.getString("RecordedTime");
+        String RouteNo = bus.getString("RouteNo");
+        Double Latitude = bus.getDouble("Latitude");
+        Double Longitude = bus.getDouble("Longitude");
+        String Destination = bus.getString("Destination");
+        String RecordedTime = bus.getString("RecordedTime");
 
         return new Bus(RouteManager.getInstance().getRouteWithNumber(RouteNo), Latitude,
                 Longitude, Destination, RecordedTime);
