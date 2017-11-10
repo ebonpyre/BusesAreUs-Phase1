@@ -62,7 +62,7 @@ public class StopParser {
                 JSONObject stop = stops.getJSONObject(i);
                 Stop s = parseStop(stop);
                 String routes = stop.getString("Routes");
-                String[] routeList = routes.split(", ", 0);
+                String[] routeList = routes.split(", *");
                 sFinal = StopManager.getInstance().getStopWithNumber(s.getNumber(),
                         s.getName(), s.getLocn());
                 for (String rNo : routeList) {

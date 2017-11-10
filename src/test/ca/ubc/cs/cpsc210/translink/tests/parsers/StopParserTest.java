@@ -1,5 +1,8 @@
 package ca.ubc.cs.cpsc210.translink.tests.parsers;
 
+import ca.ubc.cs.cpsc210.translink.model.Route;
+import ca.ubc.cs.cpsc210.translink.model.RouteManager;
+import ca.ubc.cs.cpsc210.translink.model.Stop;
 import ca.ubc.cs.cpsc210.translink.model.StopManager;
 import ca.ubc.cs.cpsc210.translink.parsers.StopParser;
 import ca.ubc.cs.cpsc210.translink.parsers.exception.StopDataMissingException;
@@ -10,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
@@ -86,5 +90,24 @@ public class StopParserTest {
             fail ("Not expected");
         }
         assertEquals(8523, StopManager.getInstance().getNumStops());
+    }
+
+    @Test
+    public void testStopParserRouteCount() {
+        StopParser p = new StopParser("stopsroutecount.json");
+        try{
+            p.parse();
+        } catch (StopDataMissingException e) {
+            fail("Not expected");
+        } catch (JSONException e) {
+            fail ("Not expected");
+        } catch (IOException e) {
+            fail ("Not expected");
+        }
+        assertEquals(2, StopManager.getInstance().getNumStops());
+        Stop s = StopManager.getInstance().getStopWithNumber(50001);
+        assertEquals(3, s.getRoutes().size());
+        Route r = RouteManager.getInstance().getRouteWithNumber("111");
+        assertTrue(r.hasStop(s));
     }
 }
