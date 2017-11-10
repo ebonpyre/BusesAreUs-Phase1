@@ -56,7 +56,9 @@ public class Route implements Iterable<Stop> {
      * @param pattern
      */
     public void addPattern(RoutePattern pattern) {
-        patterns.add(pattern);
+        if (!patterns.contains(pattern)) {
+            patterns.add(pattern);
+        }
     }
 
     /**
